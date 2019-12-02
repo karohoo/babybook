@@ -1,15 +1,13 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
  
-export default class HomeScreen extends React.Component {
-  render() {
+function HomeScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ marginTop: 50, fontSize: 25 }}>Home!</Text>
       </View>
     );
   }
-}
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
@@ -18,4 +16,5 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 16,
   },
-});
+})
+export default HomeScreen;
