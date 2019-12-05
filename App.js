@@ -8,6 +8,7 @@ import {createStackNavigator} from 'react-navigation-stack';
  
 import HomeScreen from './src/Screens/HomeScreen';
 import AddScreen from './src/Screens/AddScreen';
+import MemoryScreen from './src/Screens/MemoryScreen';
 
 const HomeStack = createStackNavigator(
   {
@@ -25,12 +26,10 @@ const HomeStack = createStackNavigator(
 );
 const AddStack = createStackNavigator(
   {
-    //Defination of Navigaton from setting screen
     Add: { screen: AddScreen }
   },
   {
     defaultNavigationOptions: {
-      //Header customization of the perticular Screen
       headerStyle: {
         backgroundColor: '#202020',
       },
@@ -39,10 +38,25 @@ const AddStack = createStackNavigator(
     },
   }
 );
+const MemoryStack = createStackNavigator(
+  {
+    Memory: { screen: MemoryScreen }
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#202020',
+      },
+      headerTintColor: '#FFFFFF',
+      title: 'Memories'
+    },
+  }
+);
 const App = createBottomTabNavigator(
   {
     Home: { screen: HomeStack },
     Add: { screen: AddStack },
+    Memory: { screen: MemoryStack },
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -51,9 +65,11 @@ const App = createBottomTabNavigator(
         let IconComponent = Ionicons;
         let iconName;
         if (routeName === 'Home') {
-          iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+          iconName = `ios-home`;
         } else if (routeName === 'Add') {
           iconName = `ios-add-circle${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Memory') {
+          iconName = `ios-image`;
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       },
