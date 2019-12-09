@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, Keyboard, } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { TextField } from 'react-native-material-textfield';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
@@ -8,7 +8,7 @@ import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -93,6 +93,15 @@ function AddScreen() {
         />
         <TextField
           style={styles.form}
+          label='Date'
+          onChangeText={(date) =>
+            setDate(date)}
+          multiline={false}
+          baseColor="#787878"
+          tintColor="#ffc000"
+        />
+        <TextField
+          style={styles.form}
           label='Subject'
           onChangeText={(subject) =>
             setSubject(subject)}
@@ -110,28 +119,16 @@ function AddScreen() {
           tintColor="#ffc000"
         />
         <Icon
-          name="image"
+          name="add-a-photo"
           onPress={this._pickImage}
         />
-        {/* {picture &&
-          <Image source={{ uri: picture }} style={{ width: 200, height: 200 }} />} */}
+        {picture &&  picture.length > 0 ?
+          <Image source={{ uri: picture }} style={styles.image} /> : null}
         <View style={styles.form}>
           <Button style={styles.button} icon="checkbox-marked-circle-outline" color="#333333" mode="outlined" onPress={saveItem}>
             Save
           </Button>
         </View>
-        <FlatList
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => <Card >
-            <Card.Content>
-              {/* <Card.Cover source={{ uri: item.picture }} /> */}
-              <Title>{item.date}</Title>
-              <Paragraph>{item.subject}</Paragraph>
-            </Card.Content>
-          </Card>}
-          data={memories}
-          ItemSeparatorComponent={listSeparator}
-        />
       </ScrollView>
     </DismissKeyboard>
   );
@@ -155,7 +152,17 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     alignSelf: "center",
-    marginTop: 25
+    marginTop: 10
+  },
+  icon: {
+    paddingBottom: 10
+  },
+  image: {
+    width: 200, 
+    height: 150,
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: '#d6d7da',
   }
 })
 
