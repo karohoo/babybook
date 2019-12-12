@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import * as SQLite from 'expo-sqlite';
@@ -17,15 +17,17 @@ function HomeScreen() {
     });
   })
   _renderItem = ({ item, index }) => {
-    return (
-      <Card style={styles.card}>
-        <Card.Cover source={{ uri: item.picture }} />
-        <Card.Content>
-          <Title>{item.date}</Title>
-          <Paragraph>{item.subject}</Paragraph>
-        </Card.Content>
-      </Card>
-    );
+    if (item.picture != "") {
+      return (
+        <Card style={styles.card}>
+          <Card.Cover source={{ uri: item.picture }} />
+          <Card.Content style={styles.cardContent}>
+            <Title style={styles.text}>{item.date}</Title>
+            <Paragraph style={styles.text}>{item.subject}</Paragraph>
+          </Card.Content>
+        </Card>
+      );
+    }
   }
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ function HomeScreen() {
         ref={(c) => { this._carousel = c; }}
         data={memories}
         renderItem={this._renderItem}
-        onSnapToItem={(index) => setActiveSlide({ index })}
+        onSnapToItem={(index) => setActiveSlide(index)}
         sliderWidth={350}
         itemWidth={300}
         contentContainerCustomStyle={{ alignItems: 'center' }}
@@ -42,14 +44,8 @@ function HomeScreen() {
       <Pagination
         dotsLength={memories.length}
         activeDotIndex={activeSlide}
-        containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 8,
-          backgroundColor: 'rgba(255, 255, 255, 0.92)'
-        }}
+        containerStyle={styles.pagination}
+        dotStyle={styles.dot}
         inactiveDotStyle={{
           // Define styles for inactive dots here
         }}
@@ -70,9 +66,23 @@ const styles = StyleSheet.create({
     borderColor: '#d6d7da',
     marginTop: 10
   },
+  cardContent: {
+    backgroundColor: '#202020'
+  },
+  text: {
+    color: 'white'
+  },
   carousel: {
     alignSelf: "center",
     alignItems: "center"
+  },
+  pagination: {
+    alignSelf: "center",
+    justifyContent: "center",
+    marginTop: 0
+  },
+  dot: {
+    backgroundColor: 'black'
   }
 })
 export default HomeScreen;

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
+import { View, Text, Alert, ScrollView, StyleSheet, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { TextField } from 'react-native-material-textfield';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
@@ -18,7 +18,6 @@ const DismissKeyboard = ({ children }) => (
 
 
 function AddScreen() {
-  const [age, setAge] = useState('');
   const [date, setDate] = useState('');
   const [subject, setSubject] = useState('');
   const [memory, setMemory] = useState('');
@@ -47,16 +46,18 @@ function AddScreen() {
 
   useEffect(() => {
     db.transaction(tx => {
-      tx.executeSql('create table if not exists memory (id integer primary key not null, age text, date text, subject text, memory text, picture text);');
+      tx.executeSql('create table if not exists memory (id integer primary key not null, date text, subject text, memory text, picture text);');
     }, null, updateList);
   }, []);
 
   const saveItem = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into memory (age, date, subject, memory, picture) values (?, ?, ?, ?, ?);',
-        [age, date, subject, memory, picture]);
+      tx.executeSql('insert into memory (date, subject, memory, picture) values (?, ?, ?, ?);',
+        [date, subject, memory, picture]);
     }, null, updateList)
-    console.log(memories);
+    Alert.alert(
+      'Memory saved!'
+    )
   }
   const updateList = () => {
     db.transaction(tx => {
@@ -65,32 +66,11 @@ function AddScreen() {
       );
     });
   }
-  const listSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 5,
-          width: "80%",
-          backgroundColor: "#fff",
-          marginLeft: "10%"
-        }}
-      />
-    );
-  };
   return (
     <DismissKeyboard>
       <ScrollView style={styles.inputContainer}>
         <Text style={styles.text}>
         </Text>
-        <TextField
-          style={styles.form}
-          label='Age'
-          onChangeText={(age) =>
-            setAge(age)}
-          multiline={false}
-          baseColor="#787878"
-          tintColor="#ffc000"
-        />
         <TextField
           style={styles.form}
           label='Date'
@@ -113,7 +93,7 @@ function AddScreen() {
           style={styles.form}
           label='Memory'
           onChangeText={(memory) =>
-            setMemory(memory)}
+            setMemory( memory)}
           multiline={true}
           baseColor="#787878"
           tintColor="#ffc000"

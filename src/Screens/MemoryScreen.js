@@ -7,7 +7,7 @@ import { Icon } from 'react-native-elements';
 
 const db = SQLite.openDatabase('memory.db');
 
-function Item({ date, subject, picture, id }) {
+function Item({ date, subject, memory, picture, id }) {
     const [memories, setMemories] = useState([]);
     const updateList = () => {
         db.transaction(tx => {
@@ -44,10 +44,20 @@ function Item({ date, subject, picture, id }) {
     } else {
         return (
             <Card style={styles.card}>
-                <Card.Content>
+                <View style={styles.memoryTextContainer}>
+                    <Text style={styles.memoryText}>&#8221; {memory} &#8221; </Text>
+                </View>
+                <Card.Content style={styles.content}>
                     <Title>{date}</Title>
                     <Paragraph>{subject}</Paragraph>
-                    <Text style={{ fontSize: 18, color: '#0000ff' }} onPress={() => deleteItem(id)}> Done</Text>
+                    <View style={styles.iconContainer}>
+                        <Icon
+                            iconStyle={styles.icon}
+                            name="edit" />
+                        <Icon
+                            name="delete"
+                            onPress={() => deleteItem(id)} />
+                    </View>
                 </Card.Content>
             </Card>
         )
@@ -66,17 +76,10 @@ function MemoryScreen() {
 
     return (
         <ScrollView style={styles.container}>
-            <Card style={styles.card}>
-                <Card.Cover source={require("../../uploads/pic.jpg")} />
-                <Card.Content>
-                    <Title>2/2018</Title>
-                    <Paragraph>On a holiday at summer cottage</Paragraph>
-                </Card.Content>
-            </Card>
             <FlatList
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) =>
-                    <Item subject={item.subject} date={item.date} picture={item.picture} id={item.id} />
+                    <Item subject={item.subject} date={item.date} memory={item.memory} picture={item.picture} id={item.id} />
                 }
                 data={memories}
             />
@@ -102,6 +105,22 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 10
+    },
+    content: {
+        borderTopWidth: 1,
+        borderTopColor: '#d6d7da',
+    },
+    memoryTextContainer: {
+        height: 195,
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    memoryText: {
+        fontSize: 30,
+        textAlign: 'center',
+        width: '90%'
     }
 })
 export default MemoryScreen;
