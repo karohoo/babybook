@@ -22,7 +22,7 @@
     "react-native-image-crop-picker": "^0.26.1",
     "react-native-material-bottom-navigation-kream": "^0.5.2",
     "react-native-paper": "^3.2.1",
-    "react-native-reanimated": "^1.4.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-snap-carousel": "^3.8.4",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.11.7",
